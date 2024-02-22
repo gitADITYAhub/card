@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Doctor</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+  }
+  h2 {
+  text-align: center;
+  margin: 40px 0; 
+  font-size: 2.5em; 
+  font-weight: 600; 
+  color: #333; 
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+  letter-spacing: 1px; 
+}
+
+  .doctor-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 0 auto;
+    max-width: 1200px; 
+    padding: 10px;
+  }
+  .doctor-card {
+    width: calc(25% - 20px);
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    background: #fff;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+  .doctor-card:hover,
+  .doctor-card.active {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+  }
+  .doctor-card img {
+    width: 100%;
+    display: block; 
+    height: auto;
+  }
+  .doctor-name {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  .doctor-title {
+    color: #555;
+  }
+
+.doctor-card:hover .doctor-name,
+.doctor-card:hover .doctor-title {
+  background-color: #0c9f50; 
+  color: #ffffff; 
+  transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+
+.doctor-name, .doctor-title {
+  padding: 5px; 
+}
+
+
+.doctor-card img {
+  width: 100%; 
+  height: 200px; 
+  object-fit:cover;
+  display: block;
+}
+
+</style>
+</head>
+<body>
+  
+<h2>Select Doctor</h2>
+
+<div class="doctor-container" id="doctorContainer">
+</div>
+
+<script>
+let doctors =[
+{ "name": "Dr. Nancy Allen", "title": "Gastroenterologist", "image": "http://farm2.staticflickr.com/1074/1105249028_762c6da62b_o.jpg" },
+  { "name": "Dr. Oliver Scott", "title": "Nephrologist", "image": "http://www.imageafter.com/dbase/images/objects_household/b11objects_household005.jpg" },
+  { "name": "Dr. Patricia Martinez", "title": "Cardiologist", "image": "http://fc09.deviantart.net/fs22/f/2007/330/5/6/Antique_Cup_and_Saucer_5_by_inspyretash_stock.jpg" },
+  { "name": "Dr. Fiona Clark", "title": "General Practitioner", "image": "http://www.imageafter.com/dbase/images/objects/b10objects019.jpg" },
+  { "name": "Dr. George Bennett", "title": "Plastic Surgeon", "image": "http://4.bp.blogspot.com/-FWmOyN2wFTI/TlRKQ2luZeI/AAAAAAAABgE/W3cKvcwmdoo/s1600/80_tif.jpg" },
+  { "name": "Dr. Hannah Brooks", "title": "Psychiatrist", "image": "http://www.sharperliving.co.uk/wp-content/uploads/2013/05/Aston-Martin-V12-Vantage-S-Objects-of-Desire-Marron-Black.jpg" },
+  { "name": "Dr. Ian Murphy", "title": "Endocrinologist", "image": "http://blog.gessato.com/wp-content/uploads/2011/11/manoteca-repurposed-objects-design-gessato-gblog-4.jpg" },
+  { "name": "Dr. Julia Patel", "title": "Rheumatologist", "image": "http://www.imageafter.com/dbase/images/objects/b12objects024.jpg" },
+  { "name": "Dr. Kevin Lopez", "title": "Anesthesiologist", "image": "http://www.imageafter.com/dbase/images/objects/b4objects023.jpg" },
+  { "name": "Dr. Laura White", "title": "Oncologist", "image": "http://4.bp.blogspot.com/-FWmOyN2wFTI/TlRKQ2luZeI/AAAAAAAABgE/W3cKvcwmdoo/s1600/80_tif.jpg" },
+  { "name": "Dr. Michael Green", "title": "Neurosurgeon", "image": "http://i.imgur.com/eeCjIGO.jpg" },
+  { "name": "Dr. Nancy Allen", "title": "Gastroenterologist", "image": "http://farm2.staticflickr.com/1074/1105249028_762c6da62b_o.jpg" },
+  { "name": "Dr. Oliver Scott", "title": "Nephrologist", "image": "http://www.imageafter.com/dbase/images/objects_household/b11objects_household005.jpg" },
+  { "name": "Dr. Patricia Martinez", "title": "Cardiologist", "image": "http://fc09.deviantart.net/fs22/f/2007/330/5/6/Antique_Cup_and_Saucer_5_by_inspyretash_stock.jpg" },
+  { "name": "Dr. Quinn Edwards", "title": "Dermatologist", "image": "http://fc02.deviantart.net/fs71/f/2013/087/f/6/knife_by_moonglowlilly-d5zlh11.png" },
+  { "name": "Dr. Rachel King", "title": "Pediatrician", "image": "http://www.vectorfree.com/media/vectors/light-bulb-silhouette.jpg" },
+  { "name": "Dr. Steven Harris", "title": "Orthopedist", "image": "http://www.imageafter.com/dbase/images/objects_household/b7objects_household011.jpg" },
+  { "name": "Dr. Teresa Young", "title": "Ophthalmologist", "image": "http://www.grocotts.co.za/files/story_photos/PLACED%20_29%20June_p17_.website.JPG" },
+  { "name": "Dr. Umar Khan", "title": "Pulmonologist", "image": "http://www.designboom.com/cms/images/jenny/livressesuccion/succion01.jpg" },
+  { "name": "Dr. Victoria Diaz", "title": "Endocrinologist", "image": "http://www.luluguinness.com/world/wp-content/uploads/2013/10/IMG_1189-1.jpg" },
+  { "name": "Dr. William Brown", "title": "Psychologist", "image": "http://fc08.deviantart.net/fs71/i/2012/329/0/0/street_lamp_by_paradise234-d5m4wbw.png" },
+  { "name": "Dr. Xiomara Cruz", "title": "Emergency Medicine Specialist", "image": "http://www.lakesidearts.org.uk/SiteData/Root/Image/APR%20-%20AUG/Jennifer%20Collier.jpg" },
+  { "name": "Dr. Yasmin Shah", "title": "Hematologist", "image": "http://fc03.deviantart.net/fs71/i/2013/082/6/c/png_candle_by_moonglowlilly-d5z1n6w.png" },
+  { "name": "Dr. Zachary Moore", "title": "Immunologist", "image": "http://www.freeimageslive.com/galleries/home/playroom/pics/objects00016g.jpg" },
+  { "name": "Dr. Amelia Torres", "title": "Geriatrician", "image": "http://www.bootleg-objects.com/download/re_sl_totale.jpg" },
+  { "name": "Dr. Brian Walker", "title": "Urologist", "image": "http://blogs.ukoln.ac.uk/cultural-heritage/files/2010/03/NIM_1983-99_23.jpg" },
+  { "name": "Dr. Charlotte Evans", "title": "Vascular Surgeon", "image": "http://www.wallsave.com/wallpapers/1920x1080/newera/262606/newera-black-cap-new-york-city-monochrome-objects-ny-262606.jpg" },
+  { "name": "Dr. Ian Murphy", "title": "Endocrinologist", "image": "http://blog.gessato.com/wp-content/uploads/2011/11/manoteca-repurposed-objects-design-gessato-gblog-4.jpg" },
+  { "name": "Dr. Julia Patel", "title": "Rheumatologist", "image": "http://www.imageafter.com/dbase/images/objects/b12objects024.jpg" },
+  { "name": "Dr. Kevin Lopez", "title": "Anesthesiologist", "image": "http://www.imageafter.com/dbase/images/objects/b4objects023.jpg" },
+  { "name": "Dr. Laura White", "title": "Oncologist", "image": "http://www.imageafter.com/dbase/images/objects/b19objects166.jpg" },
+  { "name": "Dr. Michael Green", "title": "Neurosurgeon", "image": "http://i.imgur.com/eeCjIGO.jpg" },
+  { "name": "Dr. Nancy Allen", "title": "Gastroenterologist", "image": "http://farm2.staticflickr.com/1074/1105249028_762c6da62b_o.jpg" },
+  { "name": "Dr. Oliver Scott", "title": "Nephrologist", "image": "http://www.imageafter.com/dbase/images/objects_household/b11objects_household005.jpg" },
+  { "name": "Dr. Patricia Martinez", "title": "Cardiologist", "image": "http://fc09.deviantart.net/fs22/f/2007/330/5/6/Antique_Cup_and_Saucer_5_by_inspyretash_stock.jpg" },
+  { "name": "Dr. Quinn Edwards", "title": "Dermatologist", "image": "http://fc02.deviantart.net/fs71/f/2013/087/f/6/knife_by_moonglowlilly-d5zlh11.png" },
+  { "name": "Dr. Rachel King", "title": "Pediatrician", "image": "http://www.vectorfree.com/media/vectors/light-bulb-silhouette.jpg" },
+  { "name": "Dr. Steven Harris", "title": "Orthopedist", "image": "http://www.imageafter.com/dbase/images/objects_household/b7objects_household011.jpg" },
+  { "name": "Dr. Teresa Young", "title": "Ophthalmologist", "image": "http://www.grocotts.co.za/files/story_photos/PLACED%20_29%20June_p17_.website.JPG" },
+  { "name": "Dr. Umar Khan", "title": "Pulmonologist", "image": "http://www.designboom.com/cms/images/jenny/livressesuccion/succion01.jpg" },
+  { "name": "Dr. Laura White", "title": "Oncologist", "image": "http://www.imageafter.com/dbase/images/objects/b19objects166.jpg" },
+  { "name": "Dr. Nancy Allen", "title": "Gastroenterologist", "image": "http://farm2.staticflickr.com/1074/1105249028_762c6da62b_o.jpg" },
+  { "name": "Dr. Oliver Scott", "title": "Nephrologist", "image": "http://www.imageafter.com/dbase/images/objects_household/b11objects_household005.jpg" },
+  { "name": "Dr. Patricia Martinez", "title": "Cardiologist", "image": "http://fc09.deviantart.net/fs22/f/2007/330/5/6/Antique_Cup_and_Saucer_5_by_inspyretash_stock.jpg" },
+];
+
+
+
+function createDoctorCard(doctor) {
+  return `
+    <div class="doctor-card" onclick="selectCard(this)">
+      <img src="${doctor.image}" alt="${doctor.name}">
+      <div class="doctor-name">${doctor.name}</div>
+      <div class="doctor-title">${doctor.title}</div>
+    </div>
+  `;
+}
+
+function loadDoctors() {
+  const container = document.getElementById('doctorContainer');
+  doctors.forEach(doctor => {
+    container.innerHTML += createDoctorCard(doctor);
+  });
+}
+
+function selectCard(cardElement) {
+  const currentlyActiveCard = document.querySelector('.doctor-card.active');
+  if (currentlyActiveCard) {
+    currentlyActiveCard.classList.remove('active');
+  }
+  cardElement.classList.add('active');
+}
+
+window.onload = loadDoctors;
+</script>
+
+</body>
+</html>
